@@ -31,24 +31,19 @@
                                 (interleave (range (count coll))
                                             coll)))))
 
-(defn- tally-map
-  [coll]
-  (reduce (fn [h n]
-            (assoc h n (inc (h n 0))))
-          {} coll))
-
 (defn mode
   [coll]
-  (let [amap (tally-map aseq)
-        mx (apply max (vals amap))
-        modes (map key (filter #(= mx (val %)) amap))
+  (let [tallies (reduce (fn [h n]
+                          (assoc h n (inc (h n 0))))
+                        {} coll)
+        mx (apply max (vals tallies))
+        modes (map key (filter #(= mx (val %)) tallies))
         c (count modes)]
-    (cond
-      (= c 1) (first modes)
-      (= c (count amap)) nil
-      :default modes)))
+    (cond (= c 1) (first modes)
+          (= c (count tallies)) nil
+          :default modes)))
 
-(defn- euclidean-distance
+(defn euclidean-distance
   "Calculates euclidean distance between vector xs and all vectors in matrix m."
   [xs m]
   (let [xs-matrix (matrix (repeat (first (dim m))
@@ -63,10 +58,10 @@
   (let [sorted-distances (sorted-indexes (euclidean-distance xs m))
         sorted-labels (take k (map (partial nth labels)
                                    sorted-distances))
-        likely-labels (mode sorted-labels)]
-    (if (seq? likely-labels)
-      (first likely-labels)
-      likely-labels)))
+        category (mode sorted-labels)]
+    (if (seq? category)
+      (first category)
+      category)))
 
 (defn test-classifier
   [mdata]
