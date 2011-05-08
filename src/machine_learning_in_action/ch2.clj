@@ -14,15 +14,14 @@
 (defn normalise
   "Normalises values in matrix m to between 0 and 1"
   [m]
-  (let [[rows cols] (dim data)
-        col-range (range cols)
-        mins (trans (map #(repeat rows (apply min (sel data :cols %)))
-                         col-range))
-        ranges (trans (map #(repeat rows (- (apply max (sel data :cols %))
-                                            (apply min (sel data :cols %))))
-                           col-range))]
-    (div (minus data mins) ranges)))
-
+  (let [[rows cols] (dim m)
+        col-range (range cols)]
+    (div (minus m
+                (trans (map #(repeat rows (apply min (sel m :cols %)))
+                            col-range)))
+         (trans (map #(repeat rows (- (apply max (sel m :cols %))
+                                      (apply min (sel m :cols %))))
+                     col-range)))))
 
 (defn sorted-indexes
   "Sorts coll and returns indexes"
