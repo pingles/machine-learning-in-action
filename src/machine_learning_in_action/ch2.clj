@@ -55,9 +55,8 @@
 (defn knn-classify
   "Classifies vector xs against nearest k neighbours in matrix m of known vectors labelled by labels"
   [xs k m labels]
-  (let [sorted-distances (sorted-indexes (euclidean-distance xs m))
-        sorted-labels (take k (map (partial nth labels)
-                                   sorted-distances))
+  (let [sorted-labels (take k (map (partial nth labels)
+                                   (sorted-indexes (euclidean-distance xs m))))
         category (mode sorted-labels)]
     (if (seq? category)
       (first category)
@@ -68,11 +67,11 @@
   (let [labels (last (trans mdata))
         trained (normalise (sel mdata
                                 :cols (range 3)
-                                :rows (range 0 990)))
+                                :rows (range 0 980)))
         test (normalise (sel mdata
                              :cols (range 3)
-                             :rows (range 991 1000)))
-        actual (drop 991 labels)]
+                             :rows (range 981 1000)))
+        actual (drop 981 labels)]
     (partition 2 (interleave (map #(knn-classify % 5 trained labels)
                                   test)
                              actual))))
