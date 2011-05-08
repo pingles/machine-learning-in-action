@@ -59,6 +59,7 @@
         diff-matrix (minus (matrix (repeat data-set-size xs)) m)
         sq-diff (sq diff-matrix)
         sq-distances (map sum sq-diff)
+        distances (sqrt sq-distances)
         sorted-distances (sorted-indexes sq-distances)
         sorted-labels (take k (map (partial nth labels)
                                    sorted-distances))
