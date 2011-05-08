@@ -8,14 +8,12 @@
 (def data (read-dataset "./data/ch1/datingTestSet2.txt" :delim \tab))
 (def mdata (to-matrix data))
 
-(view (scatter-plot :col3 :col1 :data data))
-
-(view (scatter-plot :col0 :col1 :group-by :col3 :data data))
-
-(def c (correlation mdata))
+;; (view (scatter-plot :col3 :col1 :data data))
+;; (view (scatter-plot :col0 :col1 :group-by :col3 :data data))
+;; (def c (correlation mdata))
 
 (defn normalise
-  "Normalises columns 0..n-1"
+  "Normalises columns to between 0 and 1"
   [data]
   (let [[rows cols] (dim data)
         col-range (range 0 cols)
