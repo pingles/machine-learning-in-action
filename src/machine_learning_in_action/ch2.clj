@@ -1,8 +1,8 @@
 (ns machine-learning-in-action.ch2
   (:use [incanter.io :only (read-dataset)]
         [incanter.core :only (to-matrix sel)]
-        [incanter.charts :only (scatter-plot add-lines)]
-        [incanter.stats :only (correlation sample)]))
+        [incanter.charts :only (scatter-plot)]
+        [incanter.stats :only (correlation)]))
 
 (def data (read-dataset "./data/ch1/datingTestSet2.txt" :delim \tab))
 (def mdata (to-matrix data))
