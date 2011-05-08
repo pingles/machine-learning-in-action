@@ -51,11 +51,10 @@
 
 (defn- euclidean-distance
   [xs m]
-  (let [diff-matrix (minus (matrix (repeat (first (dim m)) xs)) m)
-        sq-diff (sq diff-matrix)
-        sq-distances (map sum sq-diff)
-        distances (sqrt sq-distances)]
-    distances))
+  (sqrt (map sum
+             (sq (minus (matrix (repeat (first (dim m))
+                                        xs))
+                        m)))))
 
 (defn knn-classify
   "Classifies vector xs against nearest k neighbours in matrix m of known vectors labelled by labels"
