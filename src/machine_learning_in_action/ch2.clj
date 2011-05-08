@@ -52,15 +52,18 @@
       (= c (count amap)) nil
       :default modes)))
 
+(defn- euclidean-distance
+  [xs m]
+  (let [diff-matrix (minus (matrix (repeat (first (dim m)) xs)) m)
+        sq-diff (sq diff-matrix)
+        sq-distances (map sum sq-diff)
+        distances (sqrt sq-distances)]
+    distances))
+
 (defn knn-classify
   "Classifies vector xs against nearest k neighbours in matrix m of known vectors labelled by labels"
   [xs k m labels]
-  (let [data-set-size (first (dim m))
-        diff-matrix (minus (matrix (repeat data-set-size xs)) m)
-        sq-diff (sq diff-matrix)
-        sq-distances (map sum sq-diff)
-        distances (sqrt sq-distances)
-        sorted-distances (sorted-indexes sq-distances)
+  (let [sorted-distances (sorted-indexes (euclidean-distance xs m))
         sorted-labels (take k (map (partial nth labels)
                                    sorted-distances))
         likely-labels (mode sorted-labels)]
