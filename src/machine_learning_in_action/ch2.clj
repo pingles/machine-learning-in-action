@@ -50,6 +50,7 @@
       :default modes)))
 
 (defn- euclidean-distance
+  "Calculates euclidean distance between vector xs and all vectors in matrix m."
   [xs m]
   (sqrt (map sum
              (sq (minus (matrix (repeat (first (dim m))
