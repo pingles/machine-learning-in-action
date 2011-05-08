@@ -15,16 +15,11 @@
   "Normalises columns to between 0 and 1"
   [data]
   (let [[rows cols] (dim data)
-        col-range (range 0 cols)
-        mins (trans (map (fn [i]
-                           (let [v (apply min (sel data :cols i))]
-                             (repeat rows v)))
+        col-range (range cols)
+        mins (trans (map #(repeat rows (apply min (sel data :cols %)))
                          col-range))
-        ranges (trans (map (fn [i]
-                             (let [rmax (apply max (sel data :cols i))
-                                   rmin (apply min (sel data :cols i))]
-                               (repeat rows (- rmax
-                                               rmin))))
+        ranges (trans (map #(repeat rows (- (apply max (sel data :cols %))
+                                            (apply min (sel data :cols %))))
                            col-range))]
     (div (minus data mins) ranges)))
 
