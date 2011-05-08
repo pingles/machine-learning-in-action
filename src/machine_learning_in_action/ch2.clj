@@ -12,8 +12,8 @@
 ;; (def c (correlation mdata))
 
 (defn normalise
-  "Normalises columns to between 0 and 1"
-  [data]
+  "Normalises values in matrix m to between 0 and 1"
+  [m]
   (let [[rows cols] (dim data)
         col-range (range cols)
         mins (trans (map #(repeat rows (apply min (sel data :cols %)))
@@ -32,12 +32,14 @@
                                 (interleave (range (count coll))
                                             coll)))))
 
-(defn- tally-map [coll]
+(defn- tally-map
+  [coll]
   (reduce (fn [h n]
             (assoc h n (inc (h n 0))))
           {} coll))
 
-(defn mode [aseq]
+(defn mode
+  [coll]
   (let [amap (tally-map aseq)
         mx (apply max (vals amap))
         modes (map key (filter #(= mx (val %)) amap))
