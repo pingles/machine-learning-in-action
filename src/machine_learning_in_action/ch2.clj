@@ -1,6 +1,6 @@
 (ns machine-learning-in-action.ch2
   (:use [incanter.io :only (read-dataset)]
-        [incanter.core :only (to-matrix sel)]
+        [incanter.core :only (matrix to-matrix sel dim div minus trans sum sum-of-squares sq sqrt)]
         [incanter.charts :only (scatter-plot)]
         [incanter.stats :only (correlation)]))
 
@@ -47,9 +47,8 @@
   "Calculates euclidean distance between vector xs and all vectors in matrix m."
   [xs m]
   (let [xs-matrix (matrix (repeat (first (dim m)) xs))]
-    (sqrt (map sum
-               (sq (minus xs-matrix
-                          m))))))
+    (sqrt (map sum-of-squares (minus xs-matrix
+                                     m)))))
 
 (defn knn-classify
   "Classifies vector xs against nearest k neighbours in matrix m of known vectors labelled by labels"
