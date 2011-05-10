@@ -46,9 +46,9 @@
 (defn euclidean-distance
   "Calculates euclidean distance between vector xs and all vectors in matrix m."
   [xs m]
-  (let [xs-matrix (matrix (repeat (first (dim m)) xs))]
-    (sqrt (map sum-of-squares (minus xs-matrix
-                                     m)))))
+  (let [difference-matrix (minus (matrix (repeat (first (dim m)) xs))
+                                 m)]
+    (sqrt (map sum-of-squares difference-matrix))))
 
 (defn knn-classify
   "Classifies vector xs against nearest k neighbours in matrix m of known vectors labelled by labels"
