@@ -1,6 +1,6 @@
 (ns machine-learning-in-action.ch4
   (:use [incanter.io :only (read-dataset)]
-        [incanter.core :only (log to-matrix matrix dim plus sum div conj-rows)]
+        [incanter.core :only (log to-matrix matrix dim plus sum div mult)]
         [clojure.set :only (intersection union difference)]
         [clojure.contrib.string :only (lower-case split)]))
 
@@ -56,3 +56,13 @@
     {:abusive p-abusive
      :categories {0 (log (div p0-num p0-denom))
                   1 (log (div p1-num p1-denom))}}))
+
+(defn classify-nb
+  [vec p0vec p1vec pclass1]
+  (let [p0 (+ (sum (mult (matrix [vec]) p0vec))
+              (log pclass1))
+        p1 (+ (sum (mult (matrix [vec]) p1vec))
+              (log (- 1 pclass1)))]
+    (if (> p1 p0)
+      {:0 p0 :1 p1 :result 1}
+      {:0 p0 :1 p1 :result 0})))
