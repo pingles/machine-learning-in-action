@@ -66,3 +66,9 @@
     (if (> p1 p0)
       {:0 p0 :1 p1 :result 1}
       {:0 p0 :1 p1 :result 0})))
+
+;; (def m (train-nb0 our-matrix classes))
+;; (def i-bad (vocab-vector all-vocab (nth posting-list 1)))
+;; (classify-nb i-bad (get-in m [:categories 0]) (get-in m [:categories 1]) 0.5)
+;; 
+;; {:0 -23.959247129717546, :1 -18.405536949199654, :result 1}
