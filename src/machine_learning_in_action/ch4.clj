@@ -2,9 +2,8 @@
   (:use [incanter.io :only (read-dataset)]
         [incanter.core :only (log to-matrix matrix dim plus sum div mult)]
         [clojure.set :only (intersection union difference)]
-        [clojure.contrib.string :only (lower-case split)]))
-
-;;(def data (read-dataset "./data/ch4/"))
+        [clojure.contrib.string :only (lower-case split)])
+  (:import [java.io File]))
 
 (def posting-list [["my", "dog", "has", "flea", "problems", "help", "please"]
                    ["maybe", "not", "take", "him", "to", "dog", "park", "stupid"]
@@ -31,14 +30,13 @@
   (apply sorted-set (apply union (map vocab coll))))
 
 (defn vocab-vector
-  "Returns a vector indicating the words in s that exist in the vocab"
+  "Returns a vector counting the words in xs that exist in the vocab. Words are returned in the order listed in vocab"
   [vocab xs]
-  (map #(if % 1 0)
-       (let [xs (set xs)]
-         (map (partial contains? xs) vocab))))
-
-(def all-vocab (vocab-list posting-list))
-(def our-matrix (matrix (map (partial vocab-vector all-vocab) posting-list)))
+  (let [occurrences (apply hash-map (flatten (map (fn [[k v]] [k (count v)])
+                                                  (group-by identity xs))))]
+    (map #(or (get occurrences %)
+              0)
+         vocab)))
 
 (defn train-nb0
   [train-matrix categories]
@@ -67,8 +65,12 @@
       {:0 p0 :1 p1 :result 1}
       {:0 p0 :1 p1 :result 0})))
 
+
+;; (def all-vocab (vocab-list posting-list))
+;; (def our-matrix (matrix (map (partial vocab-vector all-vocab) posting-list)))
 ;; (def m (train-nb0 our-matrix classes))
 ;; (def i-bad (vocab-vector all-vocab (nth posting-list 1)))
 ;; (classify-nb i-bad (get-in m [:categories 0]) (get-in m [:categories 1]) 0.5)
 ;; 
 ;; {:0 -23.959247129717546, :1 -18.405536949199654, :result 1}
+
