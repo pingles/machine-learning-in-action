@@ -61,10 +61,7 @@
               (log pclass1))
         p1 (+ (sum (mult (matrix [vec]) p1vec))
               (log (- 1 pclass1)))]
-    (if (> p1 p0)
-      {:0 p0 :1 p1 :result 1}
-      {:0 p0 :1 p1 :result 0})))
-
+    (assoc {:0 p0 :1 p1} :result (if (> p1 p0) 1 0))))
 
 ;; (def all-vocab (vocab-list posting-list))
 ;; (def our-matrix (matrix (map (partial vocab-vector all-vocab) posting-list)))
@@ -73,4 +70,7 @@
 ;; (classify-nb i-bad (get-in m [:categories 0]) (get-in m [:categories 1]) 0.5)
 ;; 
 ;; {:0 -23.959247129717546, :1 -18.405536949199654, :result 1}
-
+;;
+;; (classify-nb (vocab-vector all-vocab (tokenise "love my
+;; dalmation")) (get-in m [:categories 0]) (get-in m [:categories 1])
+;; 0.5) 
