@@ -25,12 +25,12 @@
   (set (map lower-case xs)))
 
 (defn vocab-list
-  "Builds a vocab list across coll of tokenised documents. Assumes each doc is represented by a string"
+  "Builds a vocab list across coll of tokenised documents. Assumes each doc is represented as a sequence of tokens (for example using tokenise)."
   [coll]
   (apply sorted-set (apply union (map vocab coll))))
 
 (defn vocab-vector
-  "Returns a vector counting the words in xs that exist in the vocab. Words are returned in the order listed in vocab"
+  "Returns a vector counting the words in xs that exist in the vocab. Words are returned in the order listed in vocab. xs is a tokenised sequence."
   [vocab xs]
   (let [occurrences (apply hash-map (flatten (map (fn [[k v]] [k (count v)])
                                                   (group-by identity xs))))]
@@ -74,3 +74,4 @@
 ;; (classify-nb (vocab-vector all-vocab (tokenise "love my
 ;; dalmation")) (get-in m [:categories 0]) (get-in m [:categories 1])
 ;; 0.5) 
+
